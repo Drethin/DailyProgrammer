@@ -2,15 +2,12 @@
  * Created by Alex on 27/07/2016.
  */
 class SimplifyFractions {
-    SimplifyFractions(){
-
-        System.out.println(simplify("5 10"));
-
-    }
     public static void main(String []args){
-        new SimplifyFractions();
+        for(int i = 0; i < args.length; i+=2){
+            System.out.println(simplify(args[i] + " " + args[i+1]));
+        }
     }
-    String simplify(String fraction){
+    static String simplify(String fraction){
         int left;
         int right;
         int gcd;
@@ -20,7 +17,7 @@ class SimplifyFractions {
         gcd = gcd(right, left);
         return (left/gcd + " " + right/gcd);
     }
-    int gcd(int a, int b){
+    private static int gcd(int a, int b){
         int c = a;
         while (c!=0){
             c=a%b;
