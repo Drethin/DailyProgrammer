@@ -8,38 +8,29 @@ class FakeCoinLogic {
     String left;
     String right;
     String lean;
-    String coinList;
-    String equalCoins;
     ArrayList<ValidCombo> validCombos;
     int[][]leftCombos;
     int[][]rightCombos;
 
-    FakeCoinLogic(String[] input){
+    FakeCoinLogic(String[] input) {
         validCombos = new ArrayList<ValidCombo>();
-        coinList = "";
-        for (String s1: input) {
+        for (String s1 : input) {
             line = s1.split(" ");
             left = line[0];
             right = line[1];
             lean = line[2];
-            int numCoins = left.length() + right.length();
-            int[][] combos = new int[numCoins*numCoins][numCoins];
-            for(int i = 0; i < numCoins*numCoins; i++){
-                for(int j = 0; j < numCoins; j++){
-                    combos[i][j] = (i & (1 << j));
+            addValidCombos();
+            for (ValidCombo vc : validCombos) {
+                System.out.println("ValidCombo:");
+                for (Coin c : vc.getCombo()) {
+                    System.out.print(c + " ");
                 }
+                System.out.println();
             }
         }
     }
     public static void main(String[]args){
-        int [][]combos = new int[4][2];
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 2; j++){
-                combos[i][j] = (i >> j)%2;
-                System.out.print(combos[i][j]);
-            }
-            System.out.println();
-        }
+        new FakeCoinLogic(new String[]{"a c equal"});
     }
     private int[][] combos(String line){
         int [][]combos = new int[line.length()*line.length()][line.length()];
@@ -98,6 +89,9 @@ class FakeCoinLogic {
                 combo.add(c);
             }
         }
+        ArrayList<Coin> getCombo(){
+            return combo;
+        }
 
     }
     private class Coin{
@@ -107,5 +101,10 @@ class FakeCoinLogic {
             this.weight=weight;
             this.label = label;
         }
+        @Override
+        public String toString(){
+            return (label + ": " + weight);
+            }
+        }
     }
-}
+
