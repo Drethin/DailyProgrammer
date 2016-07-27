@@ -10,12 +10,12 @@ class FakeCoinLogic {
     String lean;
     String coinList;
     String equalCoins;
-    ArrayList<Integer> validCombos;
+    ArrayList<ValidCombo> validCombos;
     int[][]leftCombos;
     int[][]rightCombos;
 
     FakeCoinLogic(String[] input){
-        validCombos = new ArrayList<Integer>();
+        validCombos = new ArrayList<ValidCombo>();
         coinList = "";
         for (String s1: input) {
             line = s1.split(" ");
@@ -57,19 +57,27 @@ class FakeCoinLogic {
             for(int[]j:rightCombos){
                 if(lean.equals("equal")) {
                     if (sumArray(i) == sumArray(j)) {
-
+                        validCombos.add(new ValidCombo(matchCoins(i, left), matchCoins(j, right)));
                     }
                 }else if(lean.equals("left")){
                     if (sumArray(i) > sumArray(j)) {
-
+                        validCombos.add(new ValidCombo(matchCoins(i, left), matchCoins(j, right)));
                     }
                 }else if(lean.equals("right")){
                     if (sumArray(i) < sumArray(j)) {
-
+                        validCombos.add(new ValidCombo(matchCoins(i, left), matchCoins(j, right)));
                     }
                 }
             }
         }
+    }
+    private Coin[] matchCoins(int[]combo, String coins){
+        Coin[]matchedCoins = new Coin[combo.length];
+        String[]coinArray = coins.split("");
+        for(int i = 0; i < combo.length; i++){
+            matchedCoins[i] = new Coin(combo[i], coinArray[i]);
+        }
+        return matchedCoins;
     }
 
     private int sumArray(int[]array){
@@ -79,6 +87,19 @@ class FakeCoinLogic {
         }
         return sum;
     }
+    private class ValidCombo{
+        ArrayList<Coin> combo;
+        ValidCombo(Coin[]sideA, Coin[]sideB){
+            combo = new ArrayList<Coin>();
+            for(Coin c:sideA){
+                combo.add(c);
+            }
+            for(Coin c:sideB){
+                combo.add(c);
+            }
+        }
+
+    }
     private class Coin{
         int weight;
         String label;
@@ -86,6 +107,5 @@ class FakeCoinLogic {
             this.weight=weight;
             this.label = label;
         }
-
     }
 }
